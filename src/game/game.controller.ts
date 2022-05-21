@@ -11,12 +11,12 @@ export class GameController{
   constructor(private readonly gameService: GameService){}
 
   @Get()
-  findAll(){
+  findAll() {
     return this.gameService.findAll();
   }
 
   @Post()
-  create(@Body() dto: CreateGameDto) {
+  create(@Body() dto: CreateGameDto)  {
     return this.gameService.create(dto);
   }
 }
