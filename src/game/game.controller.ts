@@ -1,18 +1,19 @@
-import { Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post } from "@nestjs/common";
+import { CreateGameDto } from "./dto/create-game.dto";
 import { GameService } from "./game.service";
 
 @Controller('game')
 export class GameController{
 
-  constructor(private gameservice: GameService){}
+  constructor(private gameService: GameService){}
 
   @Get()
   findAll(){
-    return this.gameservice.findAll();
+    return this.gameService.findAll();
   }
 
   @Post()
-  create() {
-    return this.gameservice.create();
+  create(@Body() createGameDto: CreateGameDto) {
+    return this.gameService.create(createGameDto);
   }
 }
