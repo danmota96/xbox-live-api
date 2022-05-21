@@ -15,7 +15,6 @@ model Game {
   nome String
   descricao String
   number Int    @unique
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
