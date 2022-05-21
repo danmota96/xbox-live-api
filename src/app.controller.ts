@@ -6,7 +6,7 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  getAppStatus(): string {
+    return 'Server is running! \n Please check http://localhots:4444/api for Swagger docs...';
   }
 }
