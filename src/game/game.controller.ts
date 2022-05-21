@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { CreateGameDto } from "./dto/create-game.dto";
 import { GameService } from "./game.service";
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOAuth2, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Game } from "./entities/game.entity";
 
 
 @ApiTags('game')
@@ -11,12 +12,26 @@ export class GameController{
   constructor(private readonly gameService: GameService){}
 
   @Get()
-  findAll(){
+  @ApiOperation({
+    summary: 'Listar todos os jogos'
+  })
+  findAll(): Promise<Game[]> {
     return this.gameService.findAll();
   }
 
+  @Get(':id')
+  @ApiOperation({
+    summary: 'Visualizar um jogo'
+  })
+  findOne(@Param('id') id: string): Promise<Game>{
+    return this.gameService.findOne(id);
+  }
+
   @Post()
-  create(@Body() createGameDto: CreateGameDto) {
+  @ApiOperation({
+    summary: 'Registrar um novo jogo'
+  })
+  create(@Body() createGameDto: CreateGameDto): Promise<Game> {
     return this.gameService.create(createGameDto);
   }
 }
