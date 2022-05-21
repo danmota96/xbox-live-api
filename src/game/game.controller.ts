@@ -8,7 +8,7 @@ import { ApiTags } from '@nestjs/swagger';
 @Controller('game')
 export class GameController{
 
-  constructor(private gameService: GameService){}
+  constructor(private readonly gameService: GameService){}
 
   @Get()
   findAll(){
