@@ -8,8 +8,9 @@ export class GameService {
   games: Game[] = [];
 
   findAll() {
-    return 'Buscar todos os jogos';
+    return this.games;
   }
+
   create(createGameDto: CreateGameDto) {
     const game:
      Game = {
@@ -20,7 +21,7 @@ export class GameService {
        ...createGameDto
   }
 
-    this.games.push();
+    this.games.push(game);
 
     return game;
   }
