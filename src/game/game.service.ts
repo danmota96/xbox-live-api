@@ -17,7 +17,6 @@ export class GameService {
        id: 'random_id',
        nome: 'random_nome',
        descricao: 'random_desc',
-       number: 'random_numb',
        ...createGameDto
   }
 
