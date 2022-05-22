@@ -5,7 +5,6 @@ import { UpdateGenreDto } from "./dto/update-genre.dto";
 import { Genre } from "./entities/genre.entity";
 
 
-
 @Injectable()
 export class GenreService {
 

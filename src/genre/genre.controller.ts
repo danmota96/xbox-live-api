@@ -14,7 +14,7 @@ export class GenreController{
 
   @Get()
   @ApiOperation({
-    summary: 'Listar todos os gêneres'
+    summary: 'Listar todos os gêneros'
   })
   findAll(): Promise<Genre[]> {
     return this.genreService.findAll();
@@ -30,7 +30,7 @@ export class GenreController{
 
   @Post()
   @ApiOperation({
-    summary: 'Registrar um novo gênere'
+    summary: 'Registrar um novo gênero'
   })
   create(@Body() dto: CreateGenreDto): Promise<Genre> {
     return this.genreService.create(dto);
@@ -47,7 +47,7 @@ export class GenreController{
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({
-    summary: 'Remover um jogo pelo seu ID',
+    summary: 'Remover um gênero pelo seu ID',
   })
   delete(@Param('id') id:string) {
     this.genreService.delete(id);
