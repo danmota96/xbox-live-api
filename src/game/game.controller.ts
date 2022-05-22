@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post } from "@nestjs/common";
 import { CreateGameDto } from "./dto/create-game.dto";
 import { GameService } from "./game.service";
 import { ApiOAuth2, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -43,4 +43,15 @@ export class GameController{
   update(@Param('id') id: string, @Body() dto: UpdateGameDto): Promise<Game>{
     return this.gameService.update(id, dto);
   }
+
+  @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({
+    summary: 'Remover um jogo pelo seu ID',
+  })
+  delete(@Param('id') id:string) {
+    this.gameService.delete(id);
+  }
+
+
 }
