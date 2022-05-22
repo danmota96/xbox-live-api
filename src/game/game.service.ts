@@ -14,14 +14,18 @@ export class GameService {
     return this.prisma.game.findMany();
   }
 
-  async findOne(id: string): Promise<Game> {
+  async findById(id: string): Promise<Game>{
     const record = await this.prisma.game.findUnique({ where: { id } });
 
     if (!record) {
-      throw new NotFoundException(`Registro com o ID: '${id}' não encontrado`)
+      throw new NotFoundException(`Registro com o ID: '${id}' não encontrado`);
     }
 
     return record;
+  }
+
+  async findOne(id: string): Promise<Game> {
+    return this.findById(id);
   }
 
   create(dto: CreateGameDto): Promise<Game> {
@@ -30,13 +34,15 @@ export class GameService {
     return this.prisma.game.create({data});
   }
 
-  update(id: string, dto: UpdateGameDto): Promise<Game> {
+  async update(id: string, dto: UpdateGameDto): Promise<Game> {
+    await this.findById(id);
+
     const data: Partial<Game> = {...dto};
 
     return this.prisma.game.update({where: {id},
-    data,});
+    data});
   }
-
+  
   async delete(id: string) {
    await this.prisma.game.delete({ where: { id } });
   }
