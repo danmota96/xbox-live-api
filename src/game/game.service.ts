@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import { CreateGameDto } from "./dto/create-game.dto";
 import { UpdateGameDto } from "./dto/update-game.dto";
@@ -14,8 +14,14 @@ export class GameService {
     return this.prisma.game.findMany();
   }
 
-  findOne(id: string): Promise<Game> {
-    return this.prisma.game.findUnique({ where: {id} })
+  async findOne(id: string): Promise<Game> {
+    const record = await this.prisma.game.findUnique({ where: { id } });
+
+    if (!record) {
+      throw new NotFoundException(`Registro com o ID: '${id}' não encontrado`)
+    }
+
+    return record;
   }
 
   create(dto: CreateGameDto): Promise<Game> {
