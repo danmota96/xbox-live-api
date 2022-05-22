@@ -19,7 +19,7 @@ export class GameService {
   }
 
   create(dto: CreateGameDto): Promise<Game> {
-    const data :Game = {...dto}
+    const data: Game = {...dto}
 
     return this.prisma.game.create({data});
   }
