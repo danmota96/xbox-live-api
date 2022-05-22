@@ -2,7 +2,6 @@ import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
-
 @ApiTags('status')
 @Controller()
 export class AppController {
@@ -10,7 +9,7 @@ export class AppController {
 
   @Get()
   @ApiOperation({
-    summary: 'Visualizar status da aplicação'
+    summary: 'Visualizar status da aplicação',
   })
   getAppStatus(): string {
     return 'Server is running! \n Please check http://localhost:4444/api for Swagger docs...';
