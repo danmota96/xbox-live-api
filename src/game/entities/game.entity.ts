@@ -1,5 +1,5 @@
 export class Game {
   id?: string;
-  nome: string;
-  descricao: string;
+  name: string;
+  description: string;
 }

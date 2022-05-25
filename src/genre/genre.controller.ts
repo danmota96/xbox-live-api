@@ -30,7 +30,7 @@ export class GenreController {
 
   @Get(':id')
   @ApiOperation({
-    summary: 'Visualizar um gênero',
+    summary: 'Visualizar um gênero pelo seu ID',
   })
   findOne(@Param('id') id: string): Promise<Genre> {
     return this.genreService.findOne(id);

@@ -5,10 +5,10 @@ export class CreateGameDto{
     description: 'Nome do jogo',
     example: 'Forza 7',
   })
-  nome: string;
+  name: string;
   @ApiProperty({
     description: 'Descrição do jogo',
     example: 'História, etc.',
   })
-  descricao: string;
+  description: string;
 }
