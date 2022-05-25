@@ -13,13 +13,33 @@ datasource db {
 
 model Game {
   id     String @id @default(uuid())
-  nome String
-  descricao String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  name String
+  description String
+  price Float
+  image String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+
+  @@map("game")
 }
 
 model Genre {
   id   String @id @default(uuid())
   genre String
+
+  @@map("genre")
+}
+
+model User {
+  id       String @id @default(uuid())
+  nickname String @unique
+  name     String
+  password String
+  image    String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("user")
 }
