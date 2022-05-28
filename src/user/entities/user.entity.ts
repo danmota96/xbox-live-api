@@ -1,7 +1,8 @@
 export class User {
   id?: string;
-  nickname: string;
   name: string;
+  cpf: string;
+  email: string;
   password: string;
   image: string;
   createdAt?: Date;
