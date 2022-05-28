@@ -10,31 +10,40 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model Game {
-  id     String @id @default(uuid())
-  name String
-  description String
-  price Float
-  image String
+  id                 String  @id @default(uuid())
+  title              String
+  description        String
+  price              Float
+  year               Int
+  TrailerYouTubeUrl  String
+  GameplayYouTubeUrl String
+  ImdbScore          Int
+  image              String
+  genre              Genre[]
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-
 
   @@map("game")
 }
 
 model Genre {
-  id   String @id @default(uuid())
+  id    String @id @default(uuid())
   genre String
+  game  Game[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("genre")
 }
 
 model User {
   id       String @id @default(uuid())
-  nickname String @unique
   name     String
+  cpf      String @unique
+  email    String @unique
   password String
   image    String
 
@@ -43,3 +52,6 @@ model User {
 
   @@map("user")
 }
+
+//INSERIR PROFILE
+// RELACIONAR USER X PROFILE (ONE TO MANY)
