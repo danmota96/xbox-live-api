@@ -16,6 +16,11 @@ async function bootstrap() {
     .addTag('status')
     .addTag('game')
     .addTag('user')
+<<<<<<< Updated upstream
+=======
+    .addTag('profile')
+    .addBearerAuth()
+>>>>>>> Stashed changes
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

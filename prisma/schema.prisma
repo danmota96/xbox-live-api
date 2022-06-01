@@ -20,7 +20,9 @@ model Game {
   GameplayYouTubeUrl String
   ImdbScore          Int
   image              String
+
   genre              Genre[]
+  profile            Profile[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -31,6 +33,7 @@ model Game {
 model Genre {
   id    String @id @default(uuid())
   genre String
+
   game  Game[]
 
   createdAt DateTime @default(now()) @map("created_at")
@@ -47,11 +50,25 @@ model User {
   password String
   image    String
 
+  profile Profile[]
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("user")
 }
 
-//INSERIR PROFILE
-// RELACIONAR USER X PROFILE (ONE TO MANY)
+model Profile {
+  id    String @id @default(uuid())
+  name  String
+  image String
+
+  game Game[]
+  user User @relation(fields: [userId], references: [id])
+  userId String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("profile")
+}

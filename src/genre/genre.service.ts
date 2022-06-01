@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { handleError } from 'src/utils/handle-error.util';
 import { CreateGenreDto } from './dto/create-genre.dto';
 import { UpdateGenreDto } from './dto/update-genre.dto';
 import { Genre } from './entities/genre.entity';
@@ -29,7 +30,7 @@ export class GenreService {
   create(dto: CreateGenreDto): Promise<Genre> {
     const data: Genre = { ...dto };
 
-    return this.prisma.genre.create({ data });
+    return this.prisma.genre.create({ data }).catch(handleError);
   }
 
   async update(id: string, dto: UpdateGenreDto): Promise<Genre> {
