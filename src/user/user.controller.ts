@@ -4,6 +4,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
+
 @ApiTags('user')
 @Controller('user')
 export class UserController {
@@ -29,8 +30,8 @@ export class UserController {
   @ApiOperation({
     summary: 'Visualizar um usuário pelo ID',
   })
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(id);
+  findById(@Param('id') id: string) {
+    return this.userService.findById(id);
   }
 
   @Patch(':id')
