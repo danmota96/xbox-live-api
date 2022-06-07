@@ -11,7 +11,7 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Xbox Live ')
-    .setDescription('Aplicação para gestão de rotas do projeto')
+    .setDescription('Backend do projeto Xbox Live')
     .setVersion('1.0.0')
     .addTag('status')
     .addTag('game')

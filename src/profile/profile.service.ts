@@ -10,11 +10,21 @@ export class ProfileService {
   constructor(private readonly prisma: PrismaService) {}
 
   findAll(): Promise<Profile[]> {
-    return this.prisma.profile.findMany();
+    return this.prisma.profile.findMany({
+      include: {
+        user: true,
+        game: true,
+      }
+    });
   }
 
   async findById(id: string): Promise<Profile> {
-    const record = await this.prisma.profile.findUnique({ where: { id } });
+    const record = await this.prisma.profile.findUnique({
+      where: { id:id },
+      include: {
+        game: true,
+      }
+    });
 
     if (!record) {
       throw new NotFoundException(`Registro com o ID: '${id}' não encontrado`);
@@ -23,31 +33,48 @@ export class ProfileService {
     return record;
   }
 
-  async findOne(id: string): Promise<Profile> {
-    return this.findById(id);
-  }
+
 
   async create(dto: CreateProfileDto): Promise<Profile> {
-    const data: Profile = { ...dto };
-
-    return await this.prisma.profile.create({ data: {
-      name: data.name,
-      image: data.image,
-      user: {
-        connect: {
-          id: data.userId,
-        }
-      }
-
-    } }).catch(handleError);
+    return await this.prisma.profile
+      .create({
+        data: {
+          name: dto.name,
+          image: dto.image,
+          userId: dto.userId,
+          game: {
+            connect: {
+              id: dto.gameId,
+            },
+          },
+        },
+        include: {
+          game: true,
+          user: true,
+        },
+      })
+      .catch(handleError);
   }
 
   async update(id: string, dto: UpdateProfileDto): Promise<Profile> {
     await this.findById(id);
 
-    const data: Partial<Profile> = { ...dto };
-
-    return this.prisma.profile.update({ where: { id }, data });
+    return this.prisma.profile.update({
+      where: { id },
+        data: {
+        name: dto.name,
+        image: dto.image,
+        userId: dto.userId,
+        game: {
+          connect: {
+            id: dto.gameId,
+          },
+        },
+      },
+      include: {
+        game: true,
+      }
+  });
   }
 
   async delete(id: string) {

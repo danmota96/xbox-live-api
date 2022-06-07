@@ -22,5 +22,6 @@ export class CreateProfileDto {
     example: 'https://avatars.githubusercontent.com/u/97922515?v=4',
   })
   image: string;
+  
   gameId?: string;
 }

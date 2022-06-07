@@ -30,7 +30,7 @@ export class ProfileController {
     summary: 'Visualizar um Perfil pelo ID',
   })
   findOne(@Param('id') id: string) {
-    return this.profileService.findOne(id);
+    return this.profileService.findById(id);
   }
 
   @Patch(':id')
