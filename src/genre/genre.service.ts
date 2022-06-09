@@ -17,7 +17,7 @@ export class GenreService {
     return this.prisma.genre.findMany();
   }
 
-  async findById(id: string): Promise<Genre> {
+  async findById(id: string){
     const record = await this.prisma.genre.findUnique({ where: { id } });
 
     if (!record) {
@@ -27,7 +27,7 @@ export class GenreService {
     return record;
   }
 
-  async create(user: User, dto: CreateGenreDto ): Promise<Genre> {
+  async create(user: User, dto: CreateGenreDto ){
      if(user.isAdmin){
        const genre: Genre = { ...dto};
        return await this.prisma.genre.create({ data: genre})
@@ -36,7 +36,7 @@ export class GenreService {
      }
   }
 
-  async update( id: string, dto: UpdateGenreDto, user: User,): Promise<Genre> {
+  async update( id: string, dto: UpdateGenreDto, user: User,){
     if(user.isAdmin){
       await this.findById(id);
       const data: Partial<Genre> = { ...dto };

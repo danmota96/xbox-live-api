@@ -28,13 +28,13 @@ export class UserService {
     updatedAt: true,
   };
 
-  async findAll(): Promise<User[]> {
+  async findAll(){
     return await this.prisma.user.findMany({
       select: this.userSelect,
     });
   }
 
-  async findById(id: string): Promise<User> {
+  async findById(id: string){
     const data = await this.prisma.user.findUnique({
       where: { id },
       select: this.userSelect,
@@ -47,7 +47,7 @@ export class UserService {
     return data;
   }
 
-  async create(dto: CreateUserDto): Promise<User> {
+  async create(dto: CreateUserDto) {
     if (dto.password != dto.confirmPassword) {
       throw new BadRequestException('As senhas informadas não são iguais.');
     }
@@ -67,7 +67,7 @@ export class UserService {
       .catch(handleError);
   }
 
-  async update(id: string, dto: UpdateUserDto): Promise<User> {
+  async update(id: string, dto: UpdateUserDto) {
     await this.findById(id);
 
     if (dto.cpf) {

@@ -9,7 +9,7 @@ import { Profile } from './entities/profile.entity';
 export class ProfileService {
   constructor(private readonly prisma: PrismaService) {}
 
-  findAll(): Promise<Profile[]> {
+  findAll(){
     return this.prisma.profile.findMany({
       include: {
         user: true,
@@ -18,7 +18,7 @@ export class ProfileService {
     });
   }
 
-  async findById(id: string): Promise<Profile> {
+  async findById(id: string){
     const record = await this.prisma.profile.findUnique({
       where: { id:id },
       include: {
@@ -29,13 +29,10 @@ export class ProfileService {
     if (!record) {
       throw new NotFoundException(`Registro com o ID: '${id}' não encontrado`);
     }
-
     return record;
   }
 
-
-
-  async create(dto: CreateProfileDto): Promise<Profile> {
+  async create(dto: CreateProfileDto){
     return await this.prisma.profile
       .create({
         data: {
@@ -56,7 +53,7 @@ export class ProfileService {
       .catch(handleError);
   }
 
-  async update(id: string, dto: UpdateProfileDto): Promise<Profile> {
+  async update(id: string, dto: UpdateProfileDto){
     await this.findById(id);
 
     return this.prisma.profile.update({
