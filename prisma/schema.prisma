@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Game {
-  id                 String  @id @default(uuid())
+  id                 String @id @default(uuid())
   title              String
   description        String
   price              Float
@@ -21,8 +21,9 @@ model Game {
   ImdbScore          Int
   image              String
 
-  genre              Genre[]
-  profile            Profile[]
+  genre    Genre[]
+  profile  Profile[]
+  favgames FavGames[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -32,9 +33,9 @@ model Game {
 
 model Genre {
   id    String @id @default(uuid())
-  genre String
+  genre String @unique
 
-  game  Game[]
+  game Game[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -42,14 +43,30 @@ model Genre {
   @@map("genre")
 }
 
+model Profile {
+  id    String @id @default(uuid())
+  name  String
+  image String
+
+  favgames FavGames[]
+  game     Game[]
+  user     User       @relation(fields: [userId], references: [id])
+  userId   String     @map("user_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("profile")
+}
+
 model User {
-  id       String @id @default(uuid())
+  id       String  @id @default(uuid())
   name     String
-  cpf      String @unique
-  email    String @unique
+  cpf      String  @unique
+  email    String  @unique
   password String
   image    String
-  isAdmin Boolean @map("is_admin") @default(false)
+  isAdmin  Boolean @default(false) @map("is_admin")
 
   profile Profile[]
 
@@ -59,17 +76,13 @@ model User {
   @@map("user")
 }
 
-model Profile {
-  id    String @id @default(uuid())
-  name  String
-  image String
+model FavGames {
+  id String @id @default(uuid())
+
+  profile   Profile @relation(fields: [profileId], references: [id])
+  profileId String  @unique @map("profile_id")
 
   game Game[]
-  user User @relation(fields: [userId], references: [id])
-  userId String
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  @@map("profile")
+  @@map("favgames")
 }
