@@ -15,6 +15,13 @@ export class CreateGameDto{
   })
   description: string;
 
+  @IsString()
+  @ApiProperty({
+    description: 'Gênero do jogo',
+    example: 'Corrida, ação, aventura',
+  })
+  genreName: string;
+
   @IsNumber({
     maxDecimalPlaces: 2,
   })
@@ -60,4 +67,5 @@ export class CreateGameDto{
     example: 'https://m.media-amazon.com/images/I/71RTZKIq4bL._AC_SX342_.jpg',
   })
   image: string;
+
 }
