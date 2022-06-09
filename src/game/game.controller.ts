@@ -16,6 +16,8 @@ import { ApiBearerAuth, ApiOAuth2, ApiOperation, ApiTags } from '@nestjs/swagger
 import { Game } from './entities/game.entity';
 import { UpdateGameDto } from './dto/update-game.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { LoggedUser } from 'src/auth/logged-user.decorator';
+import { User } from 'src/user/entities/user.entity';
 
 @ApiTags('game')
 @UseGuards(AuthGuard())
@@ -36,24 +38,24 @@ export class GameController {
   @ApiOperation({
     summary: 'Visualizar um jogo',
   })
-  findOne(@Param('id') id: string): Promise<Game> {
-    return this.gameService.findOne(id);
+  findById(@Param('id') id: string): Promise<Game> {
+    return this.gameService.findById(id);
   }
 
   @Post()
   @ApiOperation({
     summary: 'Registrar um novo jogo',
   })
-  create(@Body() dto: CreateGameDto): Promise<Game> {
-    return this.gameService.create(dto);
+  create(@LoggedUser() user: User, @Body() dto: CreateGameDto): Promise<Game> {
+    return this.gameService.create(user, dto);
   }
 
   @Patch(':id')
   @ApiOperation({
     summary: 'Editar um jogo pelo seu ID',
   })
-  update(@Param('id') id: string, @Body() dto: UpdateGameDto): Promise<Game> {
-    return this.gameService.update(id, dto);
+  update(@LoggedUser() user: User, @Param('id') id: string, @Body() dto: UpdateGameDto): Promise<Game> {
+    return this.gameService.update(user, id, dto);
   }
 
   @Delete(':id')
@@ -61,7 +63,7 @@ export class GameController {
   @ApiOperation({
     summary: 'Remover um jogo pelo seu ID',
   })
-  delete(@Param('id') id: string) {
-    this.gameService.delete(id);
+  delete(@LoggedUser() user: User, @Param('id') id: string) {
+    this.gameService.delete(user, id);
   }
 }

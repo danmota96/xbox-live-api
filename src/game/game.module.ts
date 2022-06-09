@@ -7,7 +7,6 @@ import { GameService } from './game.service';
 @Module({
   imports: [PrismaModule, PassportModule.register({ defaultStrategy: 'jwt'})],
   controllers: [GameController],
-  /* providers irão forcener o conteúdo */
   providers: [GameService],
 })
 export class GameModule {}
