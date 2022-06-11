@@ -12,20 +12,20 @@ import { AuthGuard } from '@nestjs/passport';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
-  @ApiOperation({
-    summary: 'Criar um usuário',
-  })
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
-  }
-
   @Get()
   @ApiOperation({
     summary: 'Listar todos os usuários',
   })
   findAll() {
     return this.userService.findAll();
+  }
+
+  @Post()
+  @ApiOperation({
+    summary: 'Criar um usuário',
+  })
+  create(@Body() createUserDto: CreateUserDto) {
+    return this.userService.create(createUserDto);
   }
 
   @Get(':id')

@@ -10,7 +10,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { handleError } from 'src/utils/handle-error.util';
-import { throws } from 'assert';
+
 
 @Injectable()
 export class UserService {
@@ -67,7 +67,7 @@ export class UserService {
       .catch(handleError);
   }
 
-  async update(id: string, dto: UpdateUserDto) {
+  async update(id: string, dto: UpdateUserDto): Promise<User> {
     await this.findById(id);
 
     if (dto.cpf) {
@@ -87,7 +87,6 @@ export class UserService {
     if (data.password) {
       data.password = await bcrypt.hash(data.password, 10);
     }
-
     return this.prisma.user.update({
       where: { id },
       data,
@@ -97,9 +96,6 @@ export class UserService {
 
   async delete(id: string) {
     await this.findById(id);
-
-    await this.prisma.user.delete({
-       where: { id }
-      });
+    await this.prisma.user.delete({ where: { id:id } });
   }
 }
