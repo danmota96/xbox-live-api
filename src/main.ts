@@ -5,7 +5,7 @@ import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  
+
   app.useGlobalPipes(new ValidationPipe());
 
   const config = new DocumentBuilder()
@@ -13,9 +13,12 @@ async function bootstrap() {
     .setDescription('Backend do projeto Xbox Live')
     .setVersion('1.0.0')
     .addTag('status')
-    .addTag('game')
+    .addTag('auth')
     .addTag('user')
     .addTag('profile')
+    .addTag('homepage')
+    .addTag('game')
+    .addTag('genre')
     .addBearerAuth()
     .build();
 
