@@ -56,7 +56,7 @@ export class GenreController {
     summary: 'Editar um gênero pelo seu ID',
   })
   update(@LoggedUser() user: User,@Param('id') id: string, @Body() dto: UpdateGenreDto): Promise<Genre> {
-    return this.genreService.update(id, dto, user);
+    return this.genreService.update(id, dto,user);
   }
 
   @Delete(':id')
