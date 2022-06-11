@@ -12,7 +12,7 @@ export class CreateProfileDto {
   @IsString()
   @ApiProperty({
     description: 'ID do Usuário (admin)',
-    example: '88bea88b-29cc-47d0-b587-8e0a6820a3c8',
+    example: '163fc984-2841-4ddd-9d29-3a73e0d52e29',
   })
   userId: string;
 
@@ -22,6 +22,6 @@ export class CreateProfileDto {
     example: 'https://avatars.githubusercontent.com/u/97922515?v=4',
   })
   image: string;
-  
+
   gameId?: string;
 }

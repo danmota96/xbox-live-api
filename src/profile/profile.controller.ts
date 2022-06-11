@@ -14,14 +14,6 @@ import { User } from 'src/user/entities/user.entity';
 export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
 
-  @Post()
-  @ApiOperation({
-    summary: 'Criar um novo Perfil',
-  })
-  create(@Body() createProfileDto: CreateProfileDto) {
-    return this.profileService.create(createProfileDto);
-  }
-
   @Get()
   @ApiOperation({
     summary: 'Listar todos os perfis',
@@ -34,16 +26,24 @@ export class ProfileController {
   @ApiOperation({
     summary: 'Visualizar um Perfil pelo ID',
   })
-  findOne(@Param('id') id: string) {
+  findById(@Param('id') id: string) {
     return this.profileService.findById(id);
+  }
+
+  @Post()
+  @ApiOperation({
+    summary: 'Criar um novo Perfil',
+  })
+  create(@LoggedUser() user: User,@Body() dto: CreateProfileDto) {
+    return this.profileService.create(user.id, dto);
   }
 
   @Patch(':id')
   @ApiOperation({
     summary: 'Editar um Perfil pelo ID',
   })
-  update(@Param('id') id: string, @Body() updateProfileDto: UpdateProfileDto) {
-    return this.profileService.update(id, updateProfileDto);
+  update(@LoggedUser() user: User,@Param('id') id: string, @Body() dto: UpdateProfileDto) {
+    return this.profileService.update(user.id , id, dto);
   }
 
   @Delete(':id')
@@ -51,7 +51,7 @@ export class ProfileController {
   @ApiOperation({
     summary: 'Deletar um Perfil pelo ID',
   })
-  delete(@Param('id') id: string) {
-    return this.profileService.delete(id);
+  delete(@LoggedUser() user: User,@Param('id') id: string) {
+    return this.profileService.delete(user, id);
   }
 }

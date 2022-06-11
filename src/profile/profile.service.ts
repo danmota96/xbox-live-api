@@ -1,5 +1,6 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { User } from 'src/user/entities/user.entity';
 import { handleError } from 'src/utils/handle-error.util';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
@@ -14,7 +15,16 @@ export class ProfileService {
       include: {
         user: true,
         game: true,
-      }
+        favgames: {
+          select: {
+            game: {
+              select: {
+                title: true,
+              },
+            },
+          },
+        },
+      },
     });
   }
 
@@ -32,50 +42,82 @@ export class ProfileService {
     return record;
   }
 
-  async create(dto: CreateProfileDto){
-    return await this.prisma.profile
-      .create({
-        data: {
-          name: dto.name,
-          image: dto.image,
-          userId: dto.userId,
-          game: {
-            connect: {
-              id: dto.gameId,
+  async create(userId: string, dto: CreateProfileDto){
+      if (dto.gameId) {
+        return await this.prisma.profile
+        .create({
+          data: {
+            name: dto.name,
+            image: dto.image,
+            userId: dto.userId,
+            game: {
+              connect: {
+                id: dto.gameId,
+              },
             },
           },
-        },
-        include: {
-          game: true,
-          user: true,
-        },
-      })
-      .catch(handleError);
-  }
-
-  async update(id: string, dto: UpdateProfileDto){
-    await this.findById(id);
-
-    return this.prisma.profile.update({
-      where: { id },
-        data: {
-        name: dto.name,
-        image: dto.image,
-        userId: dto.userId,
-        game: {
-          connect: {
-            id: dto.gameId,
+          include: {
+            game: true,
+            favgames: true,
           },
-        },
-      },
-      include: {
-        game: true,
+        })
+        .catch(handleError);
+      }else{
+        return await this.prisma.profile
+        .create({
+          data: {
+            name: dto.name,
+            image: dto.image,
+            userId: dto.userId,
+          },
+          include: {
+            favgames: true,
+          }
+        })
+        .catch(handleError);
       }
-  });
   }
 
-  async delete(id: string) {
+  async update(userId: string, id: string, dto: UpdateProfileDto) {
     await this.findById(id);
-    await this.prisma.profile.delete({ where: { id } });
+    if (dto.gameId) {
+      return this.prisma.profile
+        .update({
+          where: { id },
+          data: {
+            name: dto.name,
+            image: dto.image,
+            userId: userId,
+            favgames: {
+              connect: {
+                id: dto.gameId,
+              },
+            },
+          },
+          include: { favgames: true },
+        })
+        .catch(handleError);
+    } else {
+      return this.prisma.profile
+        .update({
+          where: { id },
+          data: {
+            name: dto.name,
+            image: dto.image,
+            userId: userId,
+          },
+          include: { favgames: true },
+        })
+        .catch(handleError);
+    }
+  }
+
+  async delete(user: User, id: string) {
+    if(user.isAdmin){
+      await this.findById(id);
+      await this.prisma.profile.delete({ where: { id } });
+    }else{
+     throw new UnauthorizedException('Usuário não autorizado. Contate o Administrador!')
+    }
   }
 }
