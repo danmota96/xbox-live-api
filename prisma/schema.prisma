@@ -48,13 +48,10 @@ model Profile {
   name  String
   image String
 
-  favgames FavGames[]
+  favgames FavGames?
   game     Game[]
   user     User       @relation(fields: [userId], references: [id])
   userId   String     @map("user_id")
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("profile")
 }
@@ -80,9 +77,7 @@ model FavGames {
   id String @id @default(uuid())
 
   profile   Profile @relation(fields: [profileId], references: [id])
-  profileId String  @unique @map("profile_id")
+  profileId String  @map("profile_id") @unique
 
   game Game[]
-
-  @@map("favgames")
 }
