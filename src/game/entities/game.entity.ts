@@ -2,7 +2,6 @@ export class Game {
   id?: string;
   title: string;
   description: string;
-  updatedAt?: Date;
   price: number;
   year: number;
   image: string;
@@ -11,4 +10,5 @@ export class Game {
   genreName?: string;
   ImdbScore: number;
   createdAt?: Date;
+  updatedAt?: Date;
 }
