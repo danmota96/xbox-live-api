@@ -10,7 +10,15 @@ import { AuthModule } from './auth/auth.module';
 import { HomepageModule } from './homepage/homepage.module';
 
 @Module({
-  imports: [GameModule, GenreModule, PrismaModule, UserModule, ProfileModule, AuthModule, HomepageModule],
+  imports: [
+    GameModule,
+    GenreModule,
+    PrismaModule,
+    UserModule,
+    ProfileModule,
+    AuthModule,
+    HomepageModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
