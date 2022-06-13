@@ -1,24 +1,25 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpCode,
+  HttpStatus,
+  UseGuards,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 
-@UseGuards(AuthGuard())
-@ApiBearerAuth()
 @ApiTags('user')
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
-
-  @Get()
-  @ApiOperation({
-    summary: 'Listar todos os usuários',
-  })
-  findAll() {
-    return this.userService.findAll();
-  }
 
   @Post()
   @ApiOperation({
@@ -28,6 +29,19 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
+  /* GET / GETBYID , UPDATE & DELETE VIA AUTENTICAÇÃO */
+  @UseGuards(AuthGuard())
+  @ApiBearerAuth()
+  @Get()
+  @ApiOperation({
+    summary: 'Listar todos os usuários',
+  })
+  findAll() {
+    return this.userService.findAll();
+  }
+
+  @UseGuards(AuthGuard())
+  @ApiBearerAuth()
   @Get(':id')
   @ApiOperation({
     summary: 'Visualizar um usuário pelo ID',
@@ -36,6 +50,8 @@ export class UserController {
     return this.userService.findById(id);
   }
 
+  @UseGuards(AuthGuard())
+  @ApiBearerAuth()
   @Patch(':id')
   @ApiOperation({
     summary: 'Editar um usuário pelo ID',
@@ -44,6 +60,8 @@ export class UserController {
     return this.userService.update(id, updateUserDto);
   }
 
+  @UseGuards(AuthGuard())
+  @ApiBearerAuth()
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({

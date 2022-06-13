@@ -1,4 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpCode,
+  HttpStatus,
+  UseGuards,
+} from '@nestjs/common';
 import { ProfileService } from './profile.service';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
@@ -34,7 +45,7 @@ export class ProfileController {
   @ApiOperation({
     summary: 'Criar um novo Perfil',
   })
-  create(@LoggedUser() user: User,@Body() dto: CreateProfileDto) {
+  create(@LoggedUser() user: User, @Body() dto: CreateProfileDto) {
     return this.profileService.create(user.id, dto);
   }
 
@@ -42,8 +53,12 @@ export class ProfileController {
   @ApiOperation({
     summary: 'Editar um Perfil pelo ID',
   })
-  update(@LoggedUser() user: User,@Param('id') id: string, @Body() dto: UpdateProfileDto) {
-    return this.profileService.update(user.id , id, dto);
+  update(
+    @LoggedUser() user: User,
+    @Param('id') id: string,
+    @Body() dto: UpdateProfileDto,
+  ) {
+    return this.profileService.update(user.id, id, dto);
   }
 
   @Delete(':id')
@@ -51,7 +66,7 @@ export class ProfileController {
   @ApiOperation({
     summary: 'Deletar um Perfil pelo ID',
   })
-  delete(@LoggedUser() user: User,@Param('id') id: string) {
+  delete(@LoggedUser() user: User, @Param('id') id: string) {
     return this.profileService.delete(user, id);
   }
 }

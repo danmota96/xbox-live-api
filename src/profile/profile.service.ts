@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { User } from 'src/user/entities/user.entity';
 import { handleError } from 'src/utils/handle-error.util';
@@ -10,7 +14,7 @@ import { Profile } from './entities/profile.entity';
 export class ProfileService {
   constructor(private readonly prisma: PrismaService) {}
 
-  findAll(){
+  findAll() {
     return this.prisma.profile.findMany({
       include: {
         user: true,
@@ -28,12 +32,12 @@ export class ProfileService {
     });
   }
 
-  async findById(id: string){
+  async findById(id: string) {
     const record = await this.prisma.profile.findUnique({
-      where: { id:id },
+      where: { id: id },
       include: {
         game: true,
-      }
+      },
     });
 
     if (!record) {
@@ -42,9 +46,9 @@ export class ProfileService {
     return record;
   }
 
-  async create(userId: string, dto: CreateProfileDto){
-      if (dto.gameId) {
-        return await this.prisma.profile
+  async create(userId: string, dto: CreateProfileDto) {
+    if (dto.gameId) {
+      return await this.prisma.profile
         .create({
           data: {
             name: dto.name,
@@ -62,8 +66,8 @@ export class ProfileService {
           },
         })
         .catch(handleError);
-      }else{
-        return await this.prisma.profile
+    } else {
+      return await this.prisma.profile
         .create({
           data: {
             name: dto.name,
@@ -72,10 +76,10 @@ export class ProfileService {
           },
           include: {
             favgames: true,
-          }
+          },
         })
         .catch(handleError);
-      }
+    }
   }
 
   async update(userId: string, id: string, dto: UpdateProfileDto) {
@@ -113,11 +117,13 @@ export class ProfileService {
   }
 
   async delete(user: User, id: string) {
-    if(user.isAdmin){
+    if (user.isAdmin) {
       await this.findById(id);
       await this.prisma.profile.delete({ where: { id } });
-    }else{
-     throw new UnauthorizedException('Usuário não autorizado. Contate o Administrador!')
+    } else {
+      throw new UnauthorizedException(
+        'Usuário não autorizado. Contate o Administrador!',
+      );
     }
   }
 }

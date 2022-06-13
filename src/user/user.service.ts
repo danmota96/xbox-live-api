@@ -2,7 +2,6 @@ import {
   BadRequestException,
   Injectable,
   NotFoundException,
-  UnprocessableEntityException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -39,11 +38,9 @@ export class UserService {
       where: { id },
       select: this.userSelect,
     });
-
     if (!data) {
       throw new NotFoundException(`Registro com o ID '${id}' não encontrado.`);
     }
-
     return data;
   }
 
@@ -79,11 +76,8 @@ export class UserService {
         throw new BadRequestException('As senhas informadas não são iguais.');
       }
     }
-
     delete dto.confirmPassword;
-
     const data: Partial<User> = { ...dto };
-
     if (data.password) {
       data.password = await bcrypt.hash(data.password, 10);
     }
