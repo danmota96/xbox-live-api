@@ -18,7 +18,7 @@ export class CreateGameDto{
   @IsString()
   @ApiProperty({
     description: 'Gênero do jogo',
-    example: 'Corrida, ação, aventura',
+    example: 'Corrida',
   })
   genreName: string;
 
@@ -57,7 +57,7 @@ export class CreateGameDto{
   @IsNumber()
   @ApiProperty({
     description: 'Score do jogo no Imdb',
-    example: '0 a 5 (retirar as aspas ao registrar)',
+    example: '5',
   })
   ImdbScore: number;
 
