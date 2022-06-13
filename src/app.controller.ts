@@ -1,6 +1,7 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Controller, Get, Req } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Request } from 'express';
+import { AppService } from './app.service';
 
 @ApiTags('status')
 @Controller()
@@ -11,7 +12,8 @@ export class AppController {
   @ApiOperation({
     summary: 'Visualizar status da aplicação',
   })
-  getAppStatus(): string {
-    return 'Server is running! \n Please check http://localhost:4444/api for Swagger docs...';
+  getAppStatus(@Req() req: Request) {
+    const baseUrl = req.protocol + '://' + req.get('host');
+    return this.appService.getAppStatus(baseUrl);
   }
 }
