@@ -48,9 +48,7 @@ export class GenreService {
         })
         .catch(handleError);
     } else {
-      throw new UnauthorizedException(
-        'Usuário não autorizado. Contate o Administrador!',
-      );
+
     }
   }
 
