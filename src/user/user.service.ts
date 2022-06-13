@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -13,6 +14,7 @@ import { handleError } from 'src/utils/handle-error.util';
 
 @Injectable()
 export class UserService {
+  isAdmin: any;
   constructor(private readonly prisma: PrismaService) {}
 
   private userSelect = {
@@ -48,14 +50,11 @@ export class UserService {
     if (dto.password != dto.confirmPassword) {
       throw new BadRequestException('As senhas informadas não são iguais.');
     }
-
     delete dto.confirmPassword;
-
     const data: User = {
       ...dto,
       password: await bcrypt.hash(dto.password, 10),
     };
-
     return this.prisma.user
       .create({
         data,
@@ -64,28 +63,35 @@ export class UserService {
       .catch(handleError);
   }
 
-  async update(id: string, dto: UpdateUserDto): Promise<User> {
-    await this.findById(id);
+  async update(user: User, id: string, dto: UpdateUserDto){
+    if (this.isAdmin) {
+      await this.findById(id);
 
-    if (dto.cpf) {
-      throw new BadRequestException('Não é possível alterar o CPF do usuário');
-    }
-
-    if (dto.password) {
-      if (dto.password != dto.confirmPassword) {
-        throw new BadRequestException('As senhas informadas não são iguais.');
+      if (dto.cpf) {
+        throw new BadRequestException('Não é possível alterar o CPF do usuário');
       }
+      if (dto.password) {
+        if (dto.password != dto.confirmPassword) {
+          throw new BadRequestException('As senhas informadas não são iguais.');
+        }
+      }
+      delete dto.confirmPassword;
+      const data: Partial<User> = { ...dto };
+      if (data.password) {
+        data.password = await bcrypt.hash(data.password, 10);
+      }
+      return this.prisma.user.update({
+        where: { id },
+        data,
+        select: this.userSelect,
+      });
+
+    }else{
+      throw new UnauthorizedException(
+        'Usuário não autorizado. Contate o Administrador!',
+      );
     }
-    delete dto.confirmPassword;
-    const data: Partial<User> = { ...dto };
-    if (data.password) {
-      data.password = await bcrypt.hash(data.password, 10);
-    }
-    return this.prisma.user.update({
-      where: { id },
-      data,
-      select: this.userSelect,
-    });
+
   }
 
   async delete(id: string) {
