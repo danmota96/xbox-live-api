@@ -12,7 +12,7 @@ export class CreateProfileDto {
   @IsString()
   @ApiProperty({
     description: 'ID do Usuário (admin)',
-    example: '163fc984-2841-4ddd-9d29-3a73e0d52e29',
+    example: 'f7f45b19-bb7c-4f0d-87ea-f0d3c04423b5',
   })
   userId: string;
 
