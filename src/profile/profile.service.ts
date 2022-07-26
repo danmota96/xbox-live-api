@@ -14,8 +14,11 @@ import { Profile } from './entities/profile.entity';
 export class ProfileService {
   constructor(private readonly prisma: PrismaService) {}
 
-  findAll() {
+  findAll(user: User) {
     return this.prisma.profile.findMany({
+      where: {
+        userId: user.id,
+      },
       include: {
         user: true,
         game: true,

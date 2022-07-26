@@ -29,8 +29,8 @@ export class ProfileController {
   @ApiOperation({
     summary: 'Listar todos os perfis',
   })
-  findAll() {
-    return this.profileService.findAll();
+  findAll(@LoggedUser() user: User) {
+    return this.profileService.findAll(user);
   }
 
   @Get(':id')
