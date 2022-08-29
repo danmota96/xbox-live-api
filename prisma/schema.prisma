@@ -75,14 +75,10 @@ model User {
 
 model FavGames {
   id String @id @default(uuid())
-  
+
   profile   Profile @relation(fields: [profileId], references: [id])
   profileId String  @map("profile_id") @unique
 
   game Game[]
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  @@map("favorites")
+  
 }
